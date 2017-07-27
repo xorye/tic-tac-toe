@@ -11,39 +11,27 @@ public class Main {
     }
 
     public static void gameInit() {
-
-        int size = 3;
-
-        Scanner sc = new Scanner(System.in);
+        InputValidator input = new InputValidator();
+        int size = 3, win = 3;
 
         System.out.println("Welcome to tic tac toe!");
 
-
-        boolean sizeInitialized = false;
-
         // Get the desired size of the board
-        do {
-            try {
-                System.out.println("Please indicate your board size (n x n): ");
-                size = Integer.parseInt(sc.nextLine());
-                sizeInitialized = true;
-            } catch (NumberFormatException e){
-                System.out.println("Invalid! Try again.");
-            }
-        }while (!sizeInitialized);
+        size = input.getIntegerInput("Please indicate your board size (n x n): ");
+        win = input.getIntegerInput("Please indicate how many in a row to win: ");
 
         // Inititialize the gameboard;
         GameBoard gameBoard = new GameBoard(size);
 
-        beginGame(gameBoard, size, sc);
+        beginGame(gameBoard, size, win);
     }
 
-    public static void beginGame(GameBoard board, int size, Scanner sc) {
-
+    public static void beginGame(GameBoard board, int size, int win) {
+        InputValidator input = new InputValidator();
         LinkedList<Player> queue = new LinkedList<Player>();
 
-        Player player1 = new Player("David", size);
-        Player player2 = new Player("Divad", size);
+        Player player1 = new Player("David", size, win);
+        Player player2 = new Player("Divad", size, win);
         queue.add(player1);
         queue.add(player2);
 
@@ -57,7 +45,8 @@ public class Main {
             System.out.println("Player 2: " + player2.getName() + " --- o");
             System.out.println(board.toString());
 
-            System.out.println("\n"+currentPlayer.getName()+", enter your move in this format (x,y) :");
+            System.out.println("\n"+currentPlayer.getName()+", it is your turn.");
+            int[] move = input.getMoveInput();
 
 
 
