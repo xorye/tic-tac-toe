@@ -6,7 +6,6 @@ import java.util.LinkedList;
 public class Main {
 
     public static void main(String args[]) {
-        System.out.println("hello world");
         gameInit();
     }
 
@@ -21,7 +20,7 @@ public class Main {
         win = input.getIntegerInput("Please indicate how many in a row to win: ");
 
         // Inititialize the gameboard;
-        GameBoard gameBoard = new GameBoard(size);
+        GameBoard gameBoard = new GameBoard(size, win);
 
         beginGame(gameBoard, size, win);
     }
@@ -30,8 +29,8 @@ public class Main {
         InputValidator input = new InputValidator();
         LinkedList<Player> queue = new LinkedList<Player>();
 
-        Player player1 = new Player("David", size, win);
-        Player player2 = new Player("Divad", size, win);
+        Player player1 = new Player("David", "x", board);
+        Player player2 = new Player("Divad", "o", board);
         queue.add(player1);
         queue.add(player2);
 
@@ -41,14 +40,20 @@ public class Main {
 
         while (!board.checkIfGameEnded()) {
             Player currentPlayer = queue.removeFirst();
+            queue.add(currentPlayer);
             System.out.println("Player 1: " + player1.getName() + " --- x");
             System.out.println("Player 2: " + player2.getName() + " --- o");
             System.out.println(board.toString());
 
             System.out.println("\n"+currentPlayer.getName()+", it is your turn.");
-            int[] move = input.getMoveInput();
+
+            // gets the move in [x, y] format. This method also checks if the move is valid.
+            int[] move = input.getMoveInput(board);
 
 
+            //if valid, add it to the Player and GameBoard object
+            //currentPlayer.addMove(move);
+            board.addMove(move, currentPlayer.getSign());
 
         }
     }

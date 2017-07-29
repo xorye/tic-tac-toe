@@ -6,13 +6,16 @@ import java.util.Arrays;
 public class GameBoard {
 
     private char[][] table;
-    private int[][] moveHistory;
     private boolean gameEnded = false;
-    private int size;
-    private int winningLength;
+    private int size, win, ignore, distance, numOfDiagArrays;
 
 
-    public GameBoard(int size) {
+    public GameBoard(int size, int win) {
+
+        this.size = size;
+        this.win = win;
+        this.numOfDiagArrays = (size * 4) - 2;
+
         this.table = new char[size][size];
 
         for (int i = 0; i < table.length; i++) {
@@ -23,12 +26,14 @@ public class GameBoard {
 
     }
 
+    public boolean addMove(int[] move, String sign) {
+
+        this.table[move[1]][move[0]] = sign.charAt(0);
+
+        return true;
+    }
+
     public boolean checkIfGameEnded() {
-        for (int i = 0; i < this.size; i++) {
-            for (int j = 0; j < this.size; j++) {
-                if (moveHistory[i][j] == winningLength) return true;
-            }
-        }
         return false;
     }
 
@@ -65,6 +70,16 @@ public class GameBoard {
         return size;
     }
 
+    public int getWin() {
+        return win;
+    }
 
 
+    public int getNumOfDiagArrays() {
+        return numOfDiagArrays;
+    }
+
+    public char[][] getGameTable() {
+        return table;
+    }
 }
