@@ -31,6 +31,7 @@ public class InputValidator {
         boolean initialized = false;
         boolean validMove = false;
         int[] move = new int[2];
+        MoveConverter converter = new MoveConverter();
 
         do {
 
@@ -44,7 +45,7 @@ public class InputValidator {
                     throw new InvalidMoveException("You have entered an invalid move!");
 
                 // convert the move into indices ie. (2,4) becomes (1, 0)
-                move = convertToIndices(move, board.getSize());
+                MoveConverter.convertToIndices(move, board.getSize());
 
                 if (board.getGameTable()[move[1]][move[0]] != '.')
                     throw new InvalidMoveException("A player has already played there!");
@@ -95,15 +96,4 @@ public class InputValidator {
         return move;
     }
 
-    private int[] convertToIndices(int[] move, int size) {
-        int[] convertedMove = new int[2];
-        convertedMove[0] = move[0] - 1;
-        convertedMove[1] = move[1] - size;
-
-        if (convertedMove[1] < 0) {
-            convertedMove[1] = Math.abs(convertedMove[1]);
-        }
-
-        return convertedMove;
-    }
 }

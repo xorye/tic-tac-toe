@@ -38,7 +38,7 @@ public class Main {
         System.out.println(player1.getName() + " will go first.\n");
 
 
-        while (!board.checkIfGameEnded()) {
+        while (!board.isGameEnded()) {
             Player currentPlayer = queue.removeFirst();
             queue.add(currentPlayer);
             System.out.println("Player 1: " + player1.getName() + " --- x");
@@ -47,14 +47,15 @@ public class Main {
 
             System.out.println("\n"+currentPlayer.getName()+", it is your turn.");
 
-            // gets the move in [x, y] format. This method also checks if the move is valid.
+            // gets the move in [x, y] index format. This method also checks if the move is valid.
             int[] move = input.getMoveInput(board);
 
-
             //if valid, add it to the Player and GameBoard object
-            //currentPlayer.addMove(move);
-            board.addMove(move, currentPlayer.getSign());
-
+            currentPlayer.addMove(move, board);
         }
+        System.out.println("Player 1: " + player1.getName() + " --- x");
+        System.out.println("Player 2: " + player2.getName() + " --- o");
+        System.out.println(board.toString());
+
     }
 }

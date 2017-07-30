@@ -33,8 +33,8 @@ public class GameBoard {
         return true;
     }
 
-    public boolean checkIfGameEnded() {
-        return false;
+    public boolean isGameEnded() {
+        return gameEnded;
     }
 
     @Override
@@ -60,6 +60,10 @@ public class GameBoard {
         }
 
         return str.toString();
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
     }
 
     public boolean gameEnded() {
