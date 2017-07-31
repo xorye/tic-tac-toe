@@ -51,7 +51,7 @@ public class Main {
             int[] move = input.getMoveInput(board);
 
             //if valid, add it to the Player and GameBoard object
-            currentPlayer.addMove(move, board);
+            board.addMove(move, currentPlayer.getSign());
         }
         System.out.println("Player 1: " + player1.getName() + " --- x");
         System.out.println("Player 2: " + player2.getName() + " --- o");
