@@ -8,6 +8,7 @@ public class GameBoard {
     private char[][] table;
     private boolean gameEnded = false;
     private int size, win;
+    private char winningSign = '.';
 
 
     public GameBoard(int size, int win) {
@@ -40,6 +41,7 @@ public class GameBoard {
         // check row, column and diagonals to see if there is a winnder
         if (checkRow(move, sign) || checkColumn(move, sign) || checkDiagonals(move, sign)) {
             this.gameEnded = true;
+            this.winningSign = sign.charAt(0);
             System.out.println("There is a winner!! Congratulations!");
             return true;
         }
@@ -161,7 +163,15 @@ public class GameBoard {
         diagPoints[1] = rightPoint;
 
         return diagPoints;
+    }
 
+    public boolean isFull() {
+        for (char[] arr: this.table) {
+            for (char ch: arr) {
+                if (ch == '.') return false;
+            }
+        }
+        return true;
     }
 
     public boolean isGameEnded() {
@@ -226,6 +236,7 @@ public class GameBoard {
         return win;
     }
 
+    public String getWinningSign() { return this.getWinningSign(); }
 
     public char[][] getGameTable() {
         return table;
