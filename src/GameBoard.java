@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Created by davidkwon on 2017-07-25.
@@ -9,13 +9,13 @@ public class GameBoard {
     private boolean gameEnded = false;
     private int size, win;
     private char winningSign = '.';
+    private int movePerformed = 0;
 
 
     public GameBoard(int size, int win) {
 
         this.size = size;
         this.win = win;
-
         this.table = new char[size][size];
 
         for (int i = 0; i < table.length; i++) {
@@ -29,22 +29,25 @@ public class GameBoard {
     public boolean addMove(int[] move, String sign) {
         // add the move to the table
         this.table[move[1]][move[0]] = sign.charAt(0);
+        this.movePerformed++;
 
         // check if there is a winner
-        checkIfWinner(move, sign);
+        check(move, sign);
 
         return true;
     }
 
-    public boolean checkIfWinner(int[] move, String sign) {
+    public boolean check(int[] move, String sign) {
 
         // check row, column and diagonals to see if there is a winnder
         if (checkRow(move, sign) || checkColumn(move, sign) || checkDiagonals(move, sign)) {
             this.gameEnded = true;
             this.winningSign = sign.charAt(0);
-            System.out.println("There is a winner!! Congratulations!");
             return true;
         }
+
+        // if (this.isFull()) this.gameEnded = true;
+        if (this.movePerformed == this.size * this.size) this.gameEnded = true;
 
         return false;
     }
@@ -52,14 +55,14 @@ public class GameBoard {
     private boolean checkRow(int[] move, String sign) {
         int consecutive = 0;
         for (int i = 0; i < table[0].length; i++) {
-            if (table[move[0]][i] == sign.charAt(0)) {
+            if (table[move[1]][i] == sign.charAt(0)) {
                 consecutive++;
             }else {
                 consecutive = 0;
             }
 
             if (consecutive == this.win) {
-                // we have a winnder
+                // we have a winner
                 return true;
             }
         }
@@ -69,7 +72,7 @@ public class GameBoard {
     private boolean checkColumn(int[] move, String sign) {
         int consecutive = 0;
         for (int i = 0; i < table.length; i++) {
-            if (table[i][move[1]] == sign.charAt(0)) {
+            if (table[i][move[0]] == sign.charAt(0)) {
                 consecutive++;
             } else {
                 consecutive = 0;
@@ -203,18 +206,17 @@ public class GameBoard {
         return str.toString();
     }
 
-    public GameBoard copy() {
-        char[][] copyTable = new char[this.size][this.size];
 
-        for (int i = 0; i < copyTable[0].length; i++) {
-            copyTable[i] = Arrays.copyOf(this.table[i], this.size);
-        }
-
-        GameBoard newBoard = new GameBoard(this.size, this.win);
-        newBoard.setTable(copyTable);
-
-        return newBoard;
+    public boolean isEmpty(int row, int col) {
+        return table[row][col] == '.';
     }
+
+    public boolean removeMove(int[] move) {
+        this.table[move[1]][move[0]] = '.';
+        this.movePerformed--;
+        return true;
+    }
+
 
     private void setTable(char[][] newTable) {
         this.table = newTable;
@@ -236,9 +238,10 @@ public class GameBoard {
         return win;
     }
 
-    public String getWinningSign() { return this.getWinningSign(); }
+    public char getWinningSign() { return winningSign; }
 
     public char[][] getGameTable() {
         return table;
     }
+
 }

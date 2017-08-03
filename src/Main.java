@@ -26,11 +26,10 @@ public class Main {
     }
 
     public static void beginGame(GameBoard board, int size, int win) {
-        InputValidator input = new InputValidator();
         LinkedList<Player> queue = new LinkedList<Player>();
 
-        Player player1 = new Player("David", "x", board);
-        Player player2 = new Player("Divad", "o", board);
+        Player player1 = new Player("David", "x", false);
+        Player player2 = new Player("Neil", "o", true, board);
         queue.add(player1);
         queue.add(player2);
 
@@ -48,7 +47,7 @@ public class Main {
             System.out.println("\n"+currentPlayer.getName()+", it is your turn.");
 
             // gets the move in [x, y] index format. This method also checks if the move is valid.
-            int[] move = input.getMoveInput(board);
+            int[] move = currentPlayer.getMove(board);
 
             //if valid, add it to the Player and GameBoard object
             board.addMove(move, currentPlayer.getSign());
@@ -58,4 +57,7 @@ public class Main {
         System.out.println(board.toString());
 
     }
+
+
+
 }
