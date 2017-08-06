@@ -6,7 +6,33 @@ import java.util.LinkedList;
 public class Main {
 
     public static void main(String args[]) {
-        gameInit();
+//        gameInit();
+
+        GameBoard board = new GameBoard(3, 3);
+
+        int[] move = new int[2];
+        move[0] = 1;
+        move[1] = 1;
+        board.addMove(move, "x");
+        move[0] = 0;
+        move[1] = 2;
+        board.addMove(move, "o");
+        move[0] = 1;
+        move[1] = 2;
+        board.addMove(move, "x");
+
+        System.out.println("Board: \n" + board.toString());
+
+
+        MinimaxTree tree = new MinimaxTree(board, "o");
+
+        long start = System.nanoTime();
+        tree.generateTree(0, -2147483648, 2147483647);
+        long elapsedTime = System.nanoTime() - start;
+        System.out.println("Generating the tree took: "+elapsedTime/ 1000000+" milliseconds.");
+
+        move = tree.getMove();
+        System.out.println("best move: " + move[0] + ", " + move[1]);
     }
 
     public static void gameInit() {

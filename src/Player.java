@@ -39,13 +39,19 @@ public class Player {
                     // the corners, for a 3x3 game
                     int[][] moves = {{0, 0},{0, 2},{2, 2},{2, 0}};
                     Random rand = new Random();
-                    move = moves[rand.nextInt(4)];
+//                    move = moves[rand.nextInt(4)];
+                    move = moves[1];
                 }
                 return move;
             }
 
-            MinimaxTree minimax = new MinimaxTree(board);
-            minimax.generateTree(this.sign, 0);
+            System.out.println("getting the move for player " + this.sign + "with this board:\n" + board.toString());
+            long start = System.nanoTime();
+            MinimaxTree minimax = new MinimaxTree(board, this.sign);
+            minimax.generateTree(0, -2147483648, 2147483647);
+            long elapsedTime = System.nanoTime() - start;
+            System.out.println("Generating the tree took: "+elapsedTime/ 1000000+" milliseconds.");
+
             return minimax.getMove();
         }
     }

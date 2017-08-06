@@ -39,7 +39,7 @@ public class GameBoard {
 
     public boolean check(int[] move, String sign) {
 
-        // check row, column and diagonals to see if there is a winnder
+        // check row, column and diagonals to see if there is a winner
         if (checkRow(move, sign) || checkColumn(move, sign) || checkDiagonals(move, sign)) {
             this.gameEnded = true;
             this.winningSign = sign.charAt(0);
@@ -214,6 +214,7 @@ public class GameBoard {
     public boolean removeMove(int[] move) {
         this.table[move[1]][move[0]] = '.';
         this.movePerformed--;
+        this.winningSign = '.';
         return true;
     }
 
