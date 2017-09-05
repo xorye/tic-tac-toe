@@ -6,20 +6,7 @@ import java.util.LinkedList;
 public class Main {
 
     public static void main(String args[]) {
-//        gameInit();
-
-        GameBoard board = new GameBoard(4, 4);
-
-        System.out.println("Board: \n" + board.toString());
-
-
-        MinimaxTree tree = new MinimaxTree(board, "o");
-
-        long start = System.nanoTime();
-        tree.generateTree(0, -2147483648, 2147483647);
-        long elapsedTime = System.nanoTime() - start;
-        System.out.println("Generating the tree took: "+elapsedTime/ 1000000+" milliseconds.");
-
+        gameInit();
     }
 
     public static void gameInit() {
