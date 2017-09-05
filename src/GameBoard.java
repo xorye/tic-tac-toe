@@ -215,6 +215,7 @@ public class GameBoard {
         this.table[move[1]][move[0]] = '.';
         this.movePerformed--;
         this.winningSign = '.';
+        this.gameEnded = false;
         return true;
     }
 

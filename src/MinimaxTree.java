@@ -2,7 +2,6 @@
  * Created by davidkwon on 2017-08-02.
  */
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MinimaxTree {
     private ArrayList<MinimaxTree> children = new ArrayList<MinimaxTree>();
@@ -26,7 +25,6 @@ public class MinimaxTree {
             return;
         }
 
-
         for (int i = 0; i < this.board.getSize(); i++) {
             for (int j = 0; j < this.board.getSize(); j++) {
 
@@ -37,57 +35,40 @@ public class MinimaxTree {
 
                     // if this is a maximizing node and its value is less than beta, we need to look at child.
                     if (this.sign.equals("o") && this.value <= beta) {
-                        System.out.println("Maximizing node.");
-                        this.board.addMove(move, sign);
-                        System.out.println("New child. This is the board: \n" + this.board.toString());
-                        MinimaxTree child = new MinimaxTree(this.board, this.sign.equals("x") ? "o" : "x");
-                        child.move = move;
-                        System.out.println("Passed down alpha: " + alpha + " Passed down beta: " + beta + ".");
-                        child.generateTree(depth + 1, alpha, beta);
-                        this.board.removeMove(move);
-                        this.addChild(child);
-                        this.board.setGameEnded(false);
-                        System.out.println("The value for this maximizing node ("+this.move[0]+ "," +this.move[1]+") is: " + this.value);
-                        if (this.value < child.value) {
-                            System.out.println("The child value:" + child.value);
-                            this.value = child.value;
-                            System.out.println("The new value is: " + this.value);
-                        }
-                        if (this.value > alpha) {
-                            alpha = this.value;
-                            System.out.println("Thew new alpha to pass down is: " + alpha);
-                        }
+                        alpha = createMaxChild(this.board, move, this.sign, depth, alpha, beta);
                     }
 
                     // if this is a minimizing node and its value is less than alpha, we need to look at child.
                     else if (this.sign.equals("x") && this.value >= alpha) {
-                        System.out.println("Minimizing node.");
-                        this.board.addMove(move, sign);
-                        System.out.println("New child. This is the board: \n" + this.board.toString());
-                        MinimaxTree child = new MinimaxTree(this.board, this.sign.equals("x") ? "o" : "x");
-                        child.move = move;
-                        System.out.println("Passed down alpha: " + alpha + " Passed down beta: " + beta + ".");
-                        child.generateTree(depth + 1, alpha, beta);
-                        this.board.removeMove(move);
-                        this.addChild(child);
-                        this.board.setGameEnded(false);
-                        System.out.println("This value for this minimizing node ("+this.move[0]+ "," +this.move[1]+") is: " + this.value);
-                        if (this.value > child.value) {
-                            this.value = child.value;
-                            System.out.println("The new value is: " + this.value);
-                        }
-                        if (this.value < beta) {
-                            beta = this.value;
-                            System.out.println("Thew new beta to pass down is: " + beta);
-                        }
+                        beta = createMinChild(this.board, move, this.sign, depth, alpha, beta);
                     }
                 }
             }
         }
-//
-//        if (sign.equals("o")) this.value = this.getMaxValue();
-//        else this.value = this.getMinValue();
+    }
 
+    public int createMinChild(GameBoard board, int[] move, String sign, int depth, int alpha, int beta) {
+        board.addMove(move, sign);
+        MinimaxTree child = new MinimaxTree(board, sign.equals("x") ? "o" : "x");
+        child.move = move;
+        child.generateTree(depth + 1, alpha, beta);
+        board.removeMove(move);
+        this.addChild(child);
+        if (this.value > child.value) this.value = child.value;
+        if (this.value < beta) beta = this.value;
+        return beta;
+    }
+
+    public int createMaxChild(GameBoard board, int[] move, String sign, int depth, int alpha, int beta) {
+        board.addMove(move, sign);
+        MinimaxTree child = new MinimaxTree(board, sign.equals("x") ? "o" : "x");
+        child.move = move;
+        child.generateTree(depth + 1, alpha, beta);
+        board.removeMove(move);
+        this.addChild(child);
+        if (this.value < child.value) this.value = child.value;
+        if (this.value > alpha) alpha = this.value;
+        return alpha;
     }
 
     public int[] getMove() {
@@ -95,16 +76,9 @@ public class MinimaxTree {
         int[] move = new int[2];
 
         for (MinimaxTree tree: this.children) {
-            System.out.println("The value of child with move : " + tree.move[0] + ", " + tree.move[1] + " is: " + tree.value);
-        }
-
-        for (MinimaxTree tree: this.children) {
 
             if (tree.value == this.value) {
                 move = tree.move;
-                System.out.println("value is: " + this.value);
-                System.out.println("Valid moves: ");
-                System.out.println(Integer.toString(tree.move[0]) +","+ Integer.toString(tree.move[1]));
             }
         }
 
@@ -112,16 +86,12 @@ public class MinimaxTree {
     }
 
     public int getValue(int depth) {
-        System.out.println("get value was called!!");
         char winningSign = this.board.getWinningSign();
         if (winningSign == 'x') {
-            System.out.println("lose");
             return depth - 10;
         } else if (winningSign == 'o') {
-            System.out.println("win");
             return 10 - depth;
         } else {
-            System.out.println("draw");
             return 0;
         }
     }
@@ -149,6 +119,4 @@ public class MinimaxTree {
     public int getValue() {
         return this.value;
     }
-
-
 }

@@ -8,18 +8,7 @@ public class Main {
     public static void main(String args[]) {
 //        gameInit();
 
-        GameBoard board = new GameBoard(3, 3);
-
-        int[] move = new int[2];
-        move[0] = 1;
-        move[1] = 1;
-        board.addMove(move, "x");
-        move[0] = 0;
-        move[1] = 2;
-        board.addMove(move, "o");
-        move[0] = 1;
-        move[1] = 2;
-        board.addMove(move, "x");
+        GameBoard board = new GameBoard(4, 4);
 
         System.out.println("Board: \n" + board.toString());
 
@@ -31,8 +20,6 @@ public class Main {
         long elapsedTime = System.nanoTime() - start;
         System.out.println("Generating the tree took: "+elapsedTime/ 1000000+" milliseconds.");
 
-        move = tree.getMove();
-        System.out.println("best move: " + move[0] + ", " + move[1]);
     }
 
     public static void gameInit() {
